@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "epub2kindle"
 dynamic = ["version"]
-description = "Convert EPUBs to Kindle AZW3 (KF8) for USB sideloading."
+description = "Convert EPUBs to Kindle MOBI6 for USB sideloading."
 readme = "README.md"
 license = { text = "ISC" }
 requires-python = ">=3.10"

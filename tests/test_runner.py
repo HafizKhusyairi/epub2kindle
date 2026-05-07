@@ -1,4 +1,4 @@
-"""Tests for the native pipeline (kcc_runner.run_kcc → _pipeline.run)."""
+"""Tests for the native pipeline."""
 from __future__ import annotations
 
 import io
@@ -9,7 +9,7 @@ import pytest
 from PIL import Image
 
 from epub2kindle.errors import ConversionError
-from epub2kindle.kcc_runner import run_kcc
+from epub2kindle._pipeline import run as run_kcc
 from epub2kindle.options import Options
 
 

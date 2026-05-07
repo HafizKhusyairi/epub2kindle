@@ -60,7 +60,7 @@ def _expand_paths(raw_args: list[str]) -> list[Path]:
 def _make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="epub2kindle",
-        description="Convert EPUB files to Kindle AZW3 (KF8) for USB sideloading.",
+        description="Convert EPUB files to Kindle MOBI6 for USB sideloading.",
     )
     parser.add_argument(
         "files",

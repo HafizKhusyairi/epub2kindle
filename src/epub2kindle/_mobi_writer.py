@@ -10,7 +10,7 @@ INDX/Skel/Frag record machinery that KF8 needs for content discovery.
 
 Format references:
   - https://wiki.mobileread.com/wiki/MOBI
-  - kindlecomicconverter/dualmetafix.py (EXTH offsets & PalmDB layout)
+  - Calibre writer2/main.py (authoritative MOBI6 header field layout, FCIS/FLIS)
   - KindleUnpack source (binary layout cross-check)
 """
 from __future__ import annotations
@@ -373,12 +373,12 @@ def _safe_pdb_name(title: str) -> bytes:
     return name + b"\x00"
 
 
-def write_azw3(
+def write_mobi(
     images: Sequence[tuple[str, bytes]],
     metadata: BookMetadata,
     output_path: Path,
 ) -> None:
-    """Write a MOBI6 file to ``output_path`` (extension stays ``.azw3``).
+    """Write a MOBI6 file to ``output_path``.
 
     Args:
       images: list of ``(page_id, jpeg_bytes)`` in display order.
@@ -386,7 +386,7 @@ def write_azw3(
       output_path: where to write the file.
     """
     if not images:
-        raise ValueError("write_azw3: at least one image is required")
+        raise ValueError("write_mobi: at least one image is required")
 
     # 1. Build a single HTML document for all pages, then PalmDOC-compress it.
     html = _build_html(len(images))
@@ -448,7 +448,7 @@ def write_azw3(
         f"record count mismatch: got {len(all_records)}, expected {total_records}"
     )
 
-    # 6. PalmDB header + record list + 2-byte gap + records.
+    # 7. PalmDB header + record list + 2-byte gap + records.
     pdb_name = _safe_pdb_name(metadata.title)
     pdb_header = _build_palmdb_header(pdb_name, total_records)
 

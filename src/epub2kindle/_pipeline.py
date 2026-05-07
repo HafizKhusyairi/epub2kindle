@@ -3,8 +3,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from . import _azw3_writer, _image_processor
-from ._azw3_writer import BookMetadata
+from . import _mobi_writer, _image_processor
+from ._mobi_writer import BookMetadata
 from .errors import ConversionError
 from .options import Options
 
@@ -62,7 +62,7 @@ def run(
     metadata = _build_metadata(options)
 
     try:
-        _azw3_writer.write_azw3(images, metadata, output_path)
+        _mobi_writer.write_mobi(images, metadata, output_path)
     except Exception as e:
         raise ConversionError(f"AZW3 writing failed: {e}") from e
 

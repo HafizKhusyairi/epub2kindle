@@ -90,10 +90,10 @@ class Options:
                 f"Unknown profile {self.profile!r}. Valid profiles: "
                 f"{sorted(_PROFILE_RESOLUTIONS)}"
             )
-        if self.output_format not in ("MOBI", "AZW3"):
+        if self.output_format not in ("MOBI",):
             raise ValueError(
                 f"Unknown output_format {self.output_format!r} "
-                "(only MOBI and AZW3 supported; both produce a .azw3 file)"
+                "(only MOBI is supported)"
             )
         if self.splitter not in (0, 1, 2):
             raise ValueError("splitter must be 0, 1, or 2")

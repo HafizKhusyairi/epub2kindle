@@ -1,6 +1,6 @@
 # epub2kindle
 
-Convert EPUB files (especially comic / manga EPUBs) to Kindle **AZW3** files for USB sideloading.
+Convert EPUB files (especially comic / manga EPUBs) to Kindle **MOBI** files for USB sideloading.
 
 Linux only. Pure Python — no external binaries required.
 
@@ -35,7 +35,7 @@ epub2kindle --manga --profile KPW5 -o ~/Kindle/ vol1.epub vol2.epub
 epub2kindle --dry-run my-manga.epub
 ```
 
-Output files are written as `<source-stem>.azw3` next to the input (or to `--output-dir` if given).
+Output files are written as `<source-stem>.mobi` next to the input (or to `--output-dir` if given).
 
 ## Options
 
@@ -94,15 +94,15 @@ for epub, outcome in results.items():
 source.epub
   → epub.py        extract images from spine
   → image_processor   resize/grayscale/gamma with Pillow
-  → azw3_writer    pack into KF8 (AZW3) binary directly
-  → output.azw3
+  → mobi_writer    pack into MOBI6 binary
+  → output.mobi
 ```
 
-Output is **KF8-only** (no MOBI6 backwards-compatibility layer). Every Kindle since 2011 reads KF8.
+Output is **MOBI6** (file version 6). Every Kindle since 2007 reads MOBI6.
 
 ## Limitations
 
-- **Untested on real Kindle hardware.** Output is a structurally valid Mobipocket KF8 (`file` identifies it as `Mobipocket E-book, uncompressed`), but on-device rendering hasn't been verified. Reports welcome.
+- **Tested on Kindle Paperwhite 5.** Other devices should work but haven't been verified.
 - **No smart cropping.** KCC's page-number-aware cropping, FFT-based rainbow-artifact removal, and inter-panel gutter detection are not reimplemented. For clean digital manga (e.g. Fanatical bundles) this is fine; for low-quality scans you may want a different tool.
 - **DRM-protected EPUBs are rejected** — by design.
 - **Comic / manga focused.** Text-heavy EPUBs with reflowable content will be flattened to one image per page; that's not what you want.
