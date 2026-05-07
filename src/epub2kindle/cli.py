@@ -60,7 +60,7 @@ def _expand_paths(raw_args: list[str]) -> list[Path]:
 def _make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="epub2kindle",
-        description="Convert EPUB files to Kindle-optimized MOBIs via KCC.",
+        description="Convert EPUB files to Kindle AZW3 (KF8) for USB sideloading.",
     )
     parser.add_argument(
         "files",
@@ -92,7 +92,7 @@ def _make_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--no-hq",
         action="store_true",
-        help="Disable high-quality upscaling.",
+        help="Disable high-quality JPEG encoding.",
     )
     parser.add_argument(
         "--two-panel",
@@ -121,7 +121,7 @@ def _make_parser() -> argparse.ArgumentParser:
         "-g", "--gamma",
         type=float,
         metavar="FLOAT",
-        help="Gamma correction (default: auto).",
+        help="Gamma correction (default: 1.0).",
     )
     parser.add_argument(
         "-c", "--cropping",
@@ -144,7 +144,7 @@ def _make_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Print KCC argv without running the conversion.",
+        help="List inputs and resolved options without writing any files.",
     )
     parser.add_argument(
         "--keep-temp",
@@ -215,9 +215,9 @@ def main(argv: list[str] | None = None) -> None:
                     opts = _dreplace(opts, title=extracted.title)
                 if options.author is None and extracted.authors:
                     opts = _dreplace(opts, author=extracted.authors[0])
-                argv_out = opts.to_kcc_argv(extracted.image_dir)
                 print(f"[dry-run] {epub_path}")
-                print(f"  KCC argv: {argv_out}")
+                print(f"  profile={opts.profile}  title={opts.title!r}  author={opts.author!r}")
+                print(f"  images_dir={extracted.image_dir}")
                 if not args.keep_temp:
                     extracted.cleanup()
             except Epub2KindleError as e:
@@ -229,7 +229,7 @@ def main(argv: list[str] | None = None) -> None:
     for idx, epub_path in enumerate(epub_paths, 1):
         counter = f"[{idx}/{total}] " if total > 1 else ""
         try:
-            from . import epub as epub_mod, kcc_runner
+            from . import epub as epub_mod, _pipeline
             from dataclasses import replace as _dreplace
 
             log.info("%sExtracting  %s", counter, epub_path.name)
@@ -242,7 +242,7 @@ def main(argv: list[str] | None = None) -> None:
                     opts = _dreplace(opts, author=extracted.authors[0])
 
                 with _spinner(f"{counter}Converting  {epub_path.name}…", enabled=not args.quiet):
-                    outputs = kcc_runner.run_kcc(extracted.image_dir, opts, source_epub=epub_path)
+                    outputs = _pipeline.run(extracted.image_dir, opts, source_epub=epub_path)
 
                 for out in outputs:
                     log.info("%sOK          %s → %s", counter, epub_path.name, out.name)

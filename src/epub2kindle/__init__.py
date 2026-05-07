@@ -9,11 +9,8 @@ from .errors import (
     ConversionError,
     EncryptedEpubError,
     Epub2KindleError,
-    KCCImportError,
-    KindleGenNotFoundError,
     MalformedEpubError,
     OutputDirError,
-    SevenZipNotFoundError,
 )
 from .options import Options
 
@@ -26,18 +23,13 @@ __all__ = [
     "ConversionError",
     "EncryptedEpubError",
     "MalformedEpubError",
-    "KindleGenNotFoundError",
-    "SevenZipNotFoundError",
-    "KCCImportError",
     "OutputDirError",
 ]
-
-_preflight_done = False
 
 
 def convert(epub_path: str | Path, options: Options | None = None) -> list[Path]:
     from . import epub as epub_mod
-    from . import kcc_runner, preflight
+    from . import _pipeline, preflight
 
     options = options or Options()
     epub_path = Path(epub_path)
@@ -51,7 +43,7 @@ def convert(epub_path: str | Path, options: Options | None = None) -> list[Path]
             opts = replace(opts, title=extracted.title)
         if options.author is None and extracted.authors:
             opts = replace(opts, author=extracted.authors[0])
-        return kcc_runner.run_kcc(extracted.image_dir, opts, source_epub=epub_path)
+        return _pipeline.run(extracted.image_dir, opts, source_epub=epub_path)
     finally:
         extracted.cleanup()
 
