@@ -62,7 +62,7 @@ def run(
     metadata = _build_metadata(options)
 
     try:
-        _mobi_writer.write_mobi(images, metadata, output_path)
+        _mobi_writer.write_mobi(images, metadata, output_path, manga=options.manga)
     except Exception as e:
         raise ConversionError(f"AZW3 writing failed: {e}") from e
 

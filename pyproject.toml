@@ -18,6 +18,10 @@ dev = [
     "pytest>=7.0",
     "pytest-mock>=3.0",
 ]
+dist = [
+    "pyinstaller>=6.0",
+    "pyinstaller-hooks-contrib>=2024.0",
+]
 
 [project.scripts]
 epub2kindle = "epub2kindle.cli:main"

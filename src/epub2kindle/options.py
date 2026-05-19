@@ -71,14 +71,10 @@ class Options:
     profile: str = "KPW5"
     output_dir: Path | None = None
     manga: bool = False
-    webtoon: bool = False
     hq: bool = True
-    two_panel: bool = False
-    splitter: int = 0
     upscale: bool = False
     stretch: bool = False
     gamma: float | None = None
-    cropping: int = 2
     title: str | None = None
     author: str | None = None
     output_format: str = "MOBI"
@@ -95,10 +91,6 @@ class Options:
                 f"Unknown output_format {self.output_format!r} "
                 "(only MOBI is supported)"
             )
-        if self.splitter not in (0, 1, 2):
-            raise ValueError("splitter must be 0, 1, or 2")
-        if self.cropping not in (0, 1, 2):
-            raise ValueError("cropping must be 0, 1, or 2")
 
     def output_extension(self) -> str:
         # We emit MOBI6 (file version 6). The .mobi extension is what Kindle's

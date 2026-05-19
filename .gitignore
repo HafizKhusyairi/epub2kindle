@@ -26,6 +26,9 @@ htmlcov/
 # Hatch
 .hatch/
 
+# PyInstaller
+*.spec.bak
+
 # Docs — ignore top-level markdown except README
 /*.md
 !README.md

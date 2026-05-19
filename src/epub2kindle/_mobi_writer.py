@@ -110,7 +110,7 @@ def _build_html(image_count: int) -> bytes:
     return html.encode("utf-8")
 
 
-def _build_exth(metadata: BookMetadata) -> bytes:
+def _build_exth(metadata: BookMetadata, *, manga: bool = False) -> bytes:
     records: list[tuple[int, bytes]] = []
     for author in metadata.authors:
         records.append((_EXTH_AUTHOR, _utf8(author)))
@@ -121,7 +121,7 @@ def _build_exth(metadata: BookMetadata) -> bytes:
     records.append((_EXTH_ASIN, _utf8(metadata.asin)))
     records.append((_EXTH_CONTENT_TYPE, b"EBOK"))
     records.append((_EXTH_HAS_FAKE_COVER, b"\x00\x00\x00\x00"))
-    records.append((_EXTH_WRITING_MODE, b"horizontal-lr"))
+    records.append((_EXTH_WRITING_MODE, b"horizontal-rl" if manga else b"horizontal-lr"))
     # Creator fields matching KindleGen values; Kindle firmware may require them.
     records.append((_EXTH_CREATOR_SOFT, b"\x00\x00\x00\xc9"))
     records.append((_EXTH_CREATOR_MAJ, b"\x00\x00\x00\x02"))
@@ -228,13 +228,14 @@ def _build_record0(
     fcis_record: int,
     last_content_record: int,
     metadata: BookMetadata,
+    manga: bool = False,
 ) -> bytes:
     """Assemble record 0: PalmDOC header + MOBI header + EXTH + title."""
     title_bytes = _utf8(metadata.title)
     title_length = len(title_bytes)
 
     palmdoc = _build_palmdoc_header(uncompressed_text_length, text_record_count)
-    exth = _build_exth(metadata)
+    exth = _build_exth(metadata, manga=manga)
 
     title_offset_in_record0 = len(palmdoc) + _MOBI_HEADER_LEN + len(exth)
 
@@ -377,6 +378,8 @@ def write_mobi(
     images: Sequence[tuple[str, bytes]],
     metadata: BookMetadata,
     output_path: Path,
+    *,
+    manga: bool = False,
 ) -> None:
     """Write a MOBI6 file to ``output_path``.
 
@@ -384,6 +387,7 @@ def write_mobi(
       images: list of ``(page_id, jpeg_bytes)`` in display order.
       metadata: book metadata.
       output_path: where to write the file.
+      manga: if True, sets EXTH writing-mode to ``horizontal-rl`` (RTL page progression).
     """
     if not images:
         raise ValueError("write_mobi: at least one image is required")
@@ -433,6 +437,7 @@ def write_mobi(
         fcis_record=fcis_idx,
         last_content_record=last_image_record,
         metadata=metadata,
+        manga=manga,
     )
 
     # 6. Assemble all records in their layout order.

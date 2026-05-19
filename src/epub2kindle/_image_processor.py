@@ -88,7 +88,7 @@ def _process_one(
     img.load()
 
     pages: list[Image.Image]
-    if _is_landscape(img) and options.splitter in (0, 2) and not options.webtoon:
+    if _is_landscape(img):
         pages = _split_double_page(img, options.manga)
     else:
         pages = [img]
@@ -127,11 +127,6 @@ def process_images(
             rendered.extend(_process_one(src, options, target, grayscale))
         except Exception as e:
             raise RuntimeError(f"Failed to process {src.name}: {e}") from e
-
-    if options.manga:
-        # RTL: keep page order in spine but flip page-progression-direction at the EPUB
-        # level. Page order itself stays as-is; the spine attribute controls direction.
-        pass
 
     out: list[tuple[str, bytes]] = []
     for idx, im in enumerate(rendered, start=1):

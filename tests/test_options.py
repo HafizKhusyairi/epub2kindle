@@ -20,15 +20,6 @@ def test_invalid_profile():
         Options(profile="INVALID")
 
 
-def test_invalid_cropping():
-    with pytest.raises(ValueError):
-        Options(cropping=5)
-
-
-def test_invalid_splitter():
-    with pytest.raises(ValueError):
-        Options(splitter=3)
-
 
 def test_invalid_output_format():
     with pytest.raises(ValueError, match="Unknown output_format"):

@@ -82,30 +82,12 @@ def _make_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--manga",
         action="store_true",
-        help="Right-to-left reading order.",
-    )
-    parser.add_argument(
-        "--webtoon",
-        action="store_true",
-        help="Webtoon/manhwa mode.",
+        help="Manga mode: when splitting landscape spreads, output right half before left.",
     )
     parser.add_argument(
         "--no-hq",
         action="store_true",
         help="Disable high-quality JPEG encoding.",
-    )
-    parser.add_argument(
-        "--two-panel",
-        action="store_true",
-        help="Landscape two-panel mode.",
-    )
-    parser.add_argument(
-        "--splitter",
-        type=int,
-        default=0,
-        choices=[0, 1, 2],
-        metavar="{0,1,2}",
-        help="Double-page handling: 0=split, 1=rotate, 2=both (default: 0).",
     )
     parser.add_argument(
         "-u", "--upscale",
@@ -122,14 +104,6 @@ def _make_parser() -> argparse.ArgumentParser:
         type=float,
         metavar="FLOAT",
         help="Gamma correction (default: 1.0).",
-    )
-    parser.add_argument(
-        "-c", "--cropping",
-        type=int,
-        default=2,
-        choices=[0, 1, 2],
-        metavar="{0,1,2}",
-        help="Cropping: 0=off, 1=margins, 2=margins+page nums (default: 2).",
     )
     parser.add_argument(
         "-t", "--title",
@@ -181,14 +155,10 @@ def main(argv: list[str] | None = None) -> None:
         profile=args.profile,
         output_dir=Path(args.output_dir) if args.output_dir else None,
         manga=args.manga,
-        webtoon=args.webtoon,
         hq=not args.no_hq,
-        two_panel=args.two_panel,
-        splitter=args.splitter,
         upscale=args.upscale,
         stretch=args.stretch,
         gamma=args.gamma,
-        cropping=args.cropping,
         title=args.title,
         author=args.author,
     )
