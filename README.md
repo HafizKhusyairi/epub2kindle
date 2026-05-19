@@ -1,20 +1,39 @@
 # epub2kindle
 
-Convert EPUB files (especially comic / manga EPUBs) to Kindle **MOBI** files for USB sideloading.
+A command-line tool that converts EPUB files (especially comic / manga EPUBs) to Kindle-native **MOBI** files for USB sideloading.
 
-Linux only. Pure Python — no external binaries required.
+Pure Python. No external binaries required.
 
-## Requirements
+## Download
 
-- Python 3.10+
-- Pillow (installed automatically)
+Download a standalone executable from the [Releases page](https://github.com/HafizKhusyairi/epub2kindle/releases). No Python required.
 
-That's it. No `kindlegen`, no `7z`, no Kindle Comic Converter.
+| Platform | File |
+|----------|------|
+| Linux | `epub2kindle-linux` |
+| Windows | `epub2kindle-windows.exe` |
+| macOS (Apple Silicon) | `epub2kindle-macos-arm64` |
+| macOS (Intel) | `epub2kindle-macos-x86_64` |
 
-## Installation
+**Linux/macOS:** make the file executable after downloading, then run it:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/epub2kindle.git
+chmod +x epub2kindle-linux   # or epub2kindle-macos-arm64 / epub2kindle-macos-x86_64
+./epub2kindle-linux my-manga.epub
+```
+
+**Windows:** run it directly from a command prompt:
+
+```cmd
+epub2kindle-windows.exe my-manga.epub
+```
+
+## Installation from source
+
+Requires Python 3.10+. Pillow is installed automatically. No `kindlegen`, no `7z`, no Kindle Comic Converter.
+
+```bash
+git clone https://github.com/HafizKhusyairi/epub2kindle.git
 cd epub2kindle
 pip install .
 ```
