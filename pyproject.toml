@@ -22,6 +22,10 @@ dist = [
     "pyinstaller>=6.0",
     "pyinstaller-hooks-contrib>=2024.0",
 ]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+]
 
 [project.scripts]
 epub2kindle = "epub2kindle.cli:main"

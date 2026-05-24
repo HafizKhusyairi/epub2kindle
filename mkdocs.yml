@@ -1,0 +1,34 @@
+site_name: epub2kindle — Developer Guide
+site_description: How this codebase works, chapter by chapter.
+repo_url: https://github.com/HafizKhusyairi/epub2kindle
+docs_dir: docs
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+  palette:
+    scheme: default
+
+nav:
+  - Overview: index.md
+  - "Ch 1: Python Packaging": ch1-packaging/index.md
+  - "Ch 2: CLI with argparse": ch2-cli/index.md
+  - "Ch 3: Version & Release": ch3-release/index.md
+  - "Ch 4: Unit Tests": ch4-testing/index.md
+  - "Ch 5: File Formats":
+      - Overview: ch5-formats/index.md
+      - EPUB: ch5-formats/epub.md
+      - MOBI6: ch5-formats/mobi6.md
+      - AZW3 / KF8: ch5-formats/azw3.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details

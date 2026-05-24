@@ -32,3 +32,6 @@ htmlcov/
 # Docs — ignore top-level markdown except README
 /*.md
 !README.md
+
+# MkDocs build output
+site/
