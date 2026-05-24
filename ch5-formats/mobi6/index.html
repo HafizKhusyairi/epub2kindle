@@ -1,0 +1,1226 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How this codebase works, chapter by chapter.">
+      
+      
+      
+      
+        <link rel="prev" href="../epub/">
+      
+      
+        <link rel="next" href="../azw3/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>MOBI6 - epub2kindle — Developer Guide</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ch-5-mobi6" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="epub2kindle — Developer Guide" class="md-header__button md-logo" aria-label="epub2kindle — Developer Guide" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            epub2kindle — Developer Guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MOBI6
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/HafizKhusyairi/epub2kindle" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="epub2kindle — Developer Guide" class="md-nav__button md-logo" aria-label="epub2kindle — Developer Guide" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    epub2kindle — Developer Guide
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/HafizKhusyairi/epub2kindle" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch1-packaging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 1: Python Packaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch2-cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 2: CLI with argparse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch3-release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 3: Version & Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch4-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 4: Unit Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 5: File Formats
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch 5: File Formats
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../epub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EPUB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MOBI6
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MOBI6
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#palmdb-the-outer-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PalmDB: the outer container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#record-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#record-0-the-three-part-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record 0: the three-part header
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Record 0: the three-part header">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#palmdoc-header-16-bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PalmDOC header (16 bytes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobi-header-232-bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOBI header (232 bytes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html-the-text-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTML: the text content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#palmdoc-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PalmDOC compression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exth-metadata-key-value-pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXTH: metadata key-value pairs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flis-and-fcis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FLIS and FCIS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eof-marker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EOF marker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-assembly-in-write_mobi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The assembly in write_mobi()
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../azw3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AZW3 / KF8
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#palmdb-the-outer-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PalmDB: the outer container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#record-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#record-0-the-three-part-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record 0: the three-part header
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Record 0: the three-part header">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#palmdoc-header-16-bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PalmDOC header (16 bytes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobi-header-232-bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOBI header (232 bytes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html-the-text-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTML: the text content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#palmdoc-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PalmDOC compression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exth-metadata-key-value-pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXTH: metadata key-value pairs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flis-and-fcis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FLIS and FCIS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eof-marker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EOF marker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-assembly-in-write_mobi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The assembly in write_mobi()
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ch-5-mobi6">Ch 5: MOBI6</h1>
+<p>MOBI6 is the legacy Kindle format. It's simpler than AZW3 and supported by every Kindle since 2007. This chapter explains the binary layout of the file produced by <code>_mobi_writer.py</code>.</p>
+<p>The <a href="https://wiki.mobileread.com/wiki/MOBI">MobileRead MOBI wiki page</a> is the best community reference for the format. The <a href="https://wiki.mobileread.com/wiki/PDB">PalmDB wiki page</a> covers the outer container. Python's <a href="https://docs.python.org/3/library/struct.html"><code>struct</code> module</a> is used throughout to read and write binary fields — if you haven't used it before, review the <a href="https://docs.python.org/3/library/struct.html#format-characters">format characters table</a> and note that <code>&gt;</code> means big-endian.</p>
+<hr />
+<h2 id="palmdb-the-outer-container">PalmDB: the outer container</h2>
+<p>Every MOBI file is a PalmDB (Palm Database) file. PalmDB is a simple record-based format:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[PalmDB header — 78 bytes]
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[Record list   — 8 bytes × N records]
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[Gap           — 2 bytes (always 0x0000)]
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>[Record 0 data]
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>[Record 1 data]
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>...
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>[Record N data]
+</code></pre></div>
+<p>The 78-byte header identifies the file type (<code>BOOK</code>) and creator (<code>MOBI</code>). The record list is an array where each entry is: 4-byte absolute byte offset of the record + 4-byte attribute/UID field.</p>
+<p><strong>The key constraint</strong>: record offsets must be written <em>before</em> any record data, but you don't know the offset of record N until you know the sizes of records 0 through N-1. This is why <code>write_mobi()</code> builds all records first, then computes offsets:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">cursor</span> <span class="o">=</span> <span class="n">first_record_offset</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">rec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_records</span><span class="p">):</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">record_list</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;L&quot;</span><span class="p">,</span> <span class="n">cursor</span><span class="p">))</span>    <span class="c1"># offset</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">record_list</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFF</span><span class="p">))</span>  <span class="c1"># attr</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">cursor</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="record-layout">Record layout</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Step 4 in write_mobi():</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># rec 0:        header</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># rec 1..N:     compressed text</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># rec N+1..N+M: images  (first_nonbook = first_image)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># rec N+M+1:    FLIS</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># rec N+M+2:    FCIS</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># rec N+M+3:    EOF</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">first_image_record</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">n_text</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">flis_idx</span> <span class="o">=</span> <span class="n">first_image_record</span> <span class="o">+</span> <span class="n">n_images</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">fcis_idx</span> <span class="o">=</span> <span class="n">flis_idx</span> <span class="o">+</span> <span class="mi">1</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">eof_idx</span>  <span class="o">=</span> <span class="n">fcis_idx</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div>
+<p>For a 5-page comic (5 images, 1 text record):</p>
+<table>
+<thead>
+<tr>
+<th>Record #</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>PalmDOC header + MOBI header + EXTH + title</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Compressed HTML (all pages, one text chunk)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>JPEG image for page 1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>JPEG image for page 2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>JPEG image for page 3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>JPEG image for page 4</td>
+</tr>
+<tr>
+<td>6</td>
+<td>JPEG image for page 5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>FLIS</td>
+</tr>
+<tr>
+<td>8</td>
+<td>FCIS</td>
+</tr>
+<tr>
+<td>9</td>
+<td>EOF</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="record-0-the-three-part-header">Record 0: the three-part header</h2>
+<p>Record 0 contains three concatenated structures:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">record</span> <span class="o">=</span> <span class="n">palmdoc</span> <span class="o">+</span> <span class="n">mobi_header</span> <span class="o">+</span> <span class="n">exth</span> <span class="o">+</span> <span class="n">title_bytes</span>
+</code></pre></div>
+<h3 id="palmdoc-header-16-bytes">PalmDOC header (16 bytes)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="s2">&quot;&gt;HHLHHHH&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="mi">2</span><span class="p">,</span>                    <span class="c1"># compression: 2 = PalmDOC format</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="mi">0</span><span class="p">,</span>                    <span class="c1"># unused</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">text_length</span><span class="p">,</span>          <span class="c1"># UNCOMPRESSED text length</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">text_record_count</span><span class="p">,</span>    <span class="c1"># number of text records</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="mi">4096</span><span class="p">,</span>                 <span class="c1"># max record size</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="mi">0</span><span class="p">,</span>                    <span class="c1"># encryption: 0 = none</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="mi">0</span><span class="p">,</span>                    <span class="c1"># unknown</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">)</span>
+</code></pre></div>
+<p><code>text_length</code> is the uncompressed size. The firmware decompresses each text record and uses this value to know when it has the complete text.</p>
+<h3 id="mobi-header-232-bytes">MOBI header (232 bytes)</h3>
+<p>The MOBI header starts with the 4-byte magic <code>MOBI</code> and contains all the record indices and offsets the firmware needs:</p>
+<p>Key fields (byte offsets relative to start of MOBI header):</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00</td>
+<td>Magic</td>
+<td><code>b"MOBI"</code></td>
+</tr>
+<tr>
+<td>0x04</td>
+<td>Header length</td>
+<td>232</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>File version</td>
+<td>6</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>First non-book record</td>
+<td>= first_image_record</td>
+</tr>
+<tr>
+<td>0x5c</td>
+<td>First image record</td>
+<td>= first_image_record</td>
+</tr>
+<tr>
+<td>0x70</td>
+<td>EXTH flags</td>
+<td>0x50 (EXTH present)</td>
+</tr>
+<tr>
+<td>0xb8</td>
+<td>FCIS record number</td>
+<td>= fcis_idx</td>
+</tr>
+<tr>
+<td>0xc0</td>
+<td>FLIS record number</td>
+<td>= flis_idx</td>
+</tr>
+<tr>
+<td>0xe0</td>
+<td>extra_data_flags</td>
+<td>1 (overlap byte present)</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>extra_data_flags</code> field is critical. Bit 0 set means each text record ends with a 1-byte "overlap count". In practice this byte is always <code>\x00</code> for ASCII HTML, but the firmware reads it to know how many bytes to skip at the record boundary when decompressing across records.</p>
+<hr />
+<h2 id="html-the-text-content">HTML: the text content</h2>
+<p>The MOBI6 HTML is one document with one <code>&lt;div&gt;</code> per image:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="sa">f</span><span class="s1">&#39;&lt;div style=&quot;margin:0;padding:0;page-break-after:always&quot;&gt;&lt;img recindex=&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s1">05d</span><span class="si">}</span><span class="s1">&quot; style=&quot;display:block&quot;/&gt;&lt;/div&gt;&#39;</span>
+</code></pre></div>
+<p><code>recindex="N"</code> is the MOBI-specific attribute that tells the renderer which image record to display. It is 1-based (starts at 1, not 0) and refers to an offset from <code>first_image_record</code>. So <code>recindex="00001"</code> means image record <code>first_image_record + 1 - 1 = first_image_record</code>.</p>
+<hr />
+<h2 id="palmdoc-compression">PalmDOC compression</h2>
+<p>The HTML is compressed before being stored:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">compressed</span> <span class="o">=</span> <span class="n">_palmdoc_compress</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">text_records</span> <span class="o">=</span> <span class="p">[</span><span class="n">chunk</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_split_text_records</span><span class="p">(</span><span class="n">compressed</span><span class="p">)]</span>
+</code></pre></div>
+<p>PalmDOC compression is a simple encoding. The rules for decompression:
+- <code>0x00</code>: literal NUL byte
+- <code>0x01</code>–<code>0x08</code>: length prefix — the next N bytes are literals
+- <code>0x09</code>–<code>0x7F</code>: literal byte (passes through unchanged)
+- <code>0x80</code>–<code>0xBF</code>: LZ77 back-reference (we never emit these)
+- <code>0xC0</code>–<code>0xFF</code>: space shorthand (we never emit these)</p>
+<p>Our implementation only uses the literal rules — bytes that don't fall in <code>0x09</code>–<code>0x7F</code> get wrapped in a length-prefixed escape. This is valid because PalmDOC decoders must handle all encodings, and the literal-only form is a correct subset. Modern Kindle firmware refuses <code>compression=1</code> (uncompressed) for MOBI6 records but happily accepts <code>compression=2</code> with no back-references.</p>
+<p>Each text record is split at 4096 bytes and gets a trailing <code>\x00</code> (the overlap byte declared by <code>extra_data_flags=1</code>).</p>
+<hr />
+<h2 id="exth-metadata-key-value-pairs">EXTH: metadata key-value pairs</h2>
+<p>EXTH is a variable-length block of typed records appended after the MOBI header:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>b&quot;EXTH&quot;          4 bytes  magic
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>total_length      4 bytes  total EXTH block length including header
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>record_count      4 bytes  number of records
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>[for each record:]
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>type              4 bytes  record type code
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>length            4 bytes  total length including type+length fields (= 8 + len(value))
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>value             length-8 bytes  record value
+</code></pre></div>
+<p>The block is padded to a 4-byte boundary with <code>\x00</code> bytes.</p>
+<p>Key EXTH types used:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Example value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>Author</td>
+<td><code>b"Artist Name"</code></td>
+</tr>
+<tr>
+<td>503</td>
+<td>Title</td>
+<td><code>b"My Manga"</code></td>
+</tr>
+<tr>
+<td>524</td>
+<td>Language</td>
+<td><code>b"ja"</code></td>
+</tr>
+<tr>
+<td>525</td>
+<td>Writing mode</td>
+<td><code>b"horizontal-rl"</code> (manga)</td>
+</tr>
+<tr>
+<td>204–207</td>
+<td>Creator soft/maj/min/build</td>
+<td>match KindleGen values</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>horizontal-rl</code> writing mode tells the Kindle to flip the reading direction for manga (right-to-left page progression).</p>
+<hr />
+<h2 id="flis-and-fcis">FLIS and FCIS</h2>
+<p>These are fixed-layout bookend records required by Kindle firmware:</p>
+<p><strong>FLIS</strong> (36 bytes): a fixed constant. Its bytes are the same for every MOBI file. The format is not documented; the values were reverse-engineered by matching KindleGen output.</p>
+<p><strong>FCIS</strong> (44 bytes): contains the uncompressed text length:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">_build_fcis_record</span><span class="p">(</span><span class="n">text_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="k">return</span> <span class="p">(</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        <span class="sa">b</span><span class="s2">&quot;FCIS&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="o">+</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;I&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>   <span class="c1"># constant</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        <span class="o">+</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;I&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>   <span class="c1"># constant</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="o">...</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="o">+</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;I&quot;</span><span class="p">,</span> <span class="n">text_length</span><span class="p">)</span>  <span class="c1"># ← matches PalmDOC header</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="o">...</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="p">)</span>
+</code></pre></div>
+<p>The <code>text_length</code> in FCIS must match the <code>text_length</code> in the PalmDOC header. Mismatches can cause the firmware to display empty pages or fail to open the file.</p>
+<hr />
+<h2 id="eof-marker">EOF marker</h2>
+<p>The last record is 4 bytes: <code>b"\xe9\x8e\x0d\x0a"</code>. This is the Mobipocket end-of-file sentinel. Without it, some older Kindle firmware may report the file as truncated.</p>
+<hr />
+<h2 id="the-assembly-in-write_mobi">The assembly in <code>write_mobi()</code></h2>
+<p>Reading <code>write_mobi()</code> in order reveals a two-pass structure:</p>
+<p><strong>Pass 1</strong> — build all record data:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">html</span> <span class="o">=</span> <span class="n">_build_html</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">))</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">compressed</span> <span class="o">=</span> <span class="n">_palmdoc_compress</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">text_records</span> <span class="o">=</span> <span class="p">[</span><span class="n">chunk</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_split_text_records</span><span class="p">(</span><span class="n">compressed</span><span class="p">)]</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">image_records</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bytes</span><span class="p">(</span><span class="n">jpeg</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">jpeg</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">flis_record_data</span> <span class="o">=</span> <span class="n">_build_flis_record</span><span class="p">()</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">fcis_record_data</span> <span class="o">=</span> <span class="n">_build_fcis_record</span><span class="p">(</span><span class="n">uncompressed_text_length</span><span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">eof_record</span> <span class="o">=</span> <span class="n">_build_eof_record</span><span class="p">()</span>
+</code></pre></div></p>
+<p><strong>Compute indices</strong> (now we know how many records of each type):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">first_image_record</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">n_text</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">flis_idx</span> <span class="o">=</span> <span class="n">first_image_record</span> <span class="o">+</span> <span class="n">n_images</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="o">...</span>
+</code></pre></div></p>
+<p><strong>Build record 0</strong> (needs all indices):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">record0</span> <span class="o">=</span> <span class="n">_build_record0</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">first_image_record</span><span class="o">=</span><span class="n">first_image_record</span><span class="p">,</span> <span class="n">flis_record</span><span class="o">=</span><span class="n">flis_idx</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Pass 2</strong> — compute offsets and assemble:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">cursor</span> <span class="o">=</span> <span class="n">first_record_offset</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">all_records</span><span class="p">:</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">record_list</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;L&quot;</span><span class="p">,</span> <span class="n">cursor</span><span class="p">))</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">cursor</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+</code></pre></div></p>
+<p>This ordering is mandatory. You can't write the record list until you know the size of every record, and you can't build record 0 until you know <code>first_image_record</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
