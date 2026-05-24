@@ -60,7 +60,7 @@ def _expand_paths(raw_args: list[str]) -> list[Path]:
 def _make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="epub2kindle",
-        description="Convert EPUB files to Kindle MOBI6 for USB sideloading.",
+        description="Convert EPUB files to Kindle AZW3/MOBI for USB sideloading.",
     )
     parser.add_argument(
         "files",
@@ -90,6 +90,14 @@ def _make_parser() -> argparse.ArgumentParser:
         help="Disable high-quality JPEG encoding.",
     )
     parser.add_argument(
+        "-c", "--cropping",
+        type=int,
+        default=2,
+        choices=[0, 1, 2],
+        metavar="{0,1,2}",
+        help="Cropping: 0=off, 1=margins, 2=margins+page nums (default: 2).",
+    )
+    parser.add_argument(
         "-u", "--upscale",
         action="store_true",
         help="Upscale images smaller than device resolution.",
@@ -114,6 +122,12 @@ def _make_parser() -> argparse.ArgumentParser:
         "-a", "--author",
         metavar="TEXT",
         help="Override author (default: from EPUB metadata).",
+    )
+    parser.add_argument(
+        "--format",
+        choices=["MOBI", "AZW3"],
+        default="AZW3",
+        help="Output format: AZW3/KF8 (default) or MOBI6.",
     )
     parser.add_argument(
         "--dry-run",
@@ -155,12 +169,14 @@ def main(argv: list[str] | None = None) -> None:
         profile=args.profile,
         output_dir=Path(args.output_dir) if args.output_dir else None,
         manga=args.manga,
+        cropping=args.cropping,
         hq=not args.no_hq,
         upscale=args.upscale,
         stretch=args.stretch,
         gamma=args.gamma,
         title=args.title,
         author=args.author,
+        output_format=args.format,
     )
 
     epub_paths = _expand_paths(args.files)

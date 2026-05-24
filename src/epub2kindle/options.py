@@ -45,11 +45,6 @@ _PROFILE_RESOLUTIONS: dict[str, tuple[int, int]] = {
     "KoF":    (1440, 1920),
     "KoS":    (1440, 1920),
     "KoE":    (1404, 1872),
-    # reMarkable
-    "Rmk1":   (1404, 1872),
-    "Rmk2":   (1404, 1872),
-    "RmkPP":  (1620, 2160),
-    "RmkPPMove": (954, 1696),
     # Generic
     "OTHER":  (0, 0),
 }
@@ -71,13 +66,14 @@ class Options:
     profile: str = "KPW5"
     output_dir: Path | None = None
     manga: bool = False
+    cropping: int = 2
     hq: bool = True
     upscale: bool = False
     stretch: bool = False
     gamma: float | None = None
     title: str | None = None
     author: str | None = None
-    output_format: str = "MOBI"
+    output_format: str = "AZW3"
     delete_input: bool = False
 
     def __post_init__(self) -> None:
@@ -86,17 +82,19 @@ class Options:
                 f"Unknown profile {self.profile!r}. Valid profiles: "
                 f"{sorted(_PROFILE_RESOLUTIONS)}"
             )
-        if self.output_format not in ("MOBI",):
+        if self.output_format not in ("MOBI", "AZW3"):
             raise ValueError(
                 f"Unknown output_format {self.output_format!r} "
-                "(only MOBI is supported)"
+                "(supported: MOBI, AZW3)"
             )
+        if self.cropping not in (0, 1, 2):
+            raise ValueError("cropping must be 0, 1, or 2")
 
     def output_extension(self) -> str:
-        # We emit MOBI6 (file version 6). The .mobi extension is what Kindle's
-        # library scanner expects for that format; .azw3 specifically signals
-        # KF8 (file version 8) and a v6 file with an .azw3 extension is
-        # rejected by the indexer.
+        if self.output_format == "AZW3":
+            return ".azw3"
+        # MOBI6 (file version 6) must use .mobi; .azw3 signals KF8 (version 8)
+        # and the Kindle indexer rejects a v6 file with an .azw3 extension.
         return ".mobi"
 
     def resolved_gamma(self) -> float:

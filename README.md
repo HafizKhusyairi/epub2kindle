@@ -1,8 +1,8 @@
 # epub2kindle
 
-A command-line tool that converts EPUB files (especially comic / manga EPUBs) to Kindle-native **MOBI** files for USB sideloading.
+A vibe-coded, open-source command-line tool that converts comic / manga EPUB files — individually or in batch — to Kindle-native **AZW3** files for USB sideloading.
 
-Pure Python. No external binaries required.
+Pure Python. No proprietary dependencies, no external binaries.
 
 ## Download
 
@@ -54,7 +54,7 @@ epub2kindle --manga --profile KPW5 -o ~/Kindle/ vol1.epub vol2.epub
 epub2kindle --dry-run my-manga.epub
 ```
 
-Output files are written as `<source-stem>.mobi` next to the input (or to `--output-dir` if given).
+Output files are written as `<source-stem>.azw3` next to the input (or to `--output-dir` if given).
 
 ## Options
 
@@ -62,12 +62,12 @@ Output files are written as `<source-stem>.mobi` next to the input (or to `--out
 |------|-------------|---------|
 | `-p`, `--profile` | Kindle device profile (see below) | `KPW5` |
 | `-o`, `--output-dir` | Output directory | alongside input |
+| `--format {MOBI,AZW3}` | Output format: AZW3/KF8 or MOBI6 | `AZW3` |
 | `--manga` | Right-to-left reading order | off |
-| `--webtoon` | Webtoon/manhwa mode (no double-page split) | off |
+| `-c`, `--cropping {0,1,2}` | Cropping: 0=off, 1=margins, 2=margins+page nums | `2` |
 | `--no-hq` | Lower JPEG quality (smaller files) | HQ on |
 | `--upscale` | Upscale images smaller than device res | off |
 | `--stretch` | Stretch images to fill device res | off |
-| `--splitter {0,1,2}` | Double-page handling: 0=split, 1=rotate, 2=both | `0` |
 | `-g`, `--gamma FLOAT` | Gamma correction | `1.0` |
 | `-t`, `--title` | Override title | from EPUB |
 | `-a`, `--author` | Override author | from EPUB |
@@ -76,11 +76,11 @@ Output files are written as `<source-stem>.mobi` next to the input (or to `--out
 | `--fail-fast` | Abort batch on first error | off |
 | `-v` / `-q` | Verbose / quiet | normal |
 
-The `-c`/`--cropping` flag is accepted for compatibility but currently has no effect (smart cropping algorithms aren't reimplemented yet — see Limitations).
-
 ### Device profiles
 
-Common profiles: `KPW5` (Paperwhite 5/Sig Edition, default), `KPW6`, `KO` (Oasis 2/3), `KS` (Scribe), `KS3` (Scribe 3), `K11` (Kindle 11), `KCS` (Colorsoft). Kobo and reMarkable profiles are also accepted (`KoL`, `KoF`, `KoE`, `Rmk2`, …).
+Common Kindle profiles: `KPW5` (Paperwhite 5/Sig Edition, default), `KPW6`, `KO` (Oasis 2/3), `KS` (Scribe), `KS3` (Scribe 3), `K11` (Kindle 11), `KCS` (Colorsoft). Kobo profiles are also accepted (`KoL`, `KoF`, `KoE`, `KoA`, …).
+
+> **Kobo users:** Kobo does not read AZW3. Pass `--format MOBI` to produce a MOBI file that Kobo can open.
 
 Run `epub2kindle --profile BOGUS my.epub` to see the full list in the error message, or check `_PROFILE_RESOLUTIONS` in `src/epub2kindle/options.py`.
 
@@ -111,17 +111,18 @@ for epub, outcome in results.items():
 
 ```
 source.epub
-  → epub.py        extract images from spine
+  → epub.py           extract images from spine
   → image_processor   resize/grayscale/gamma with Pillow
-  → mobi_writer    pack into MOBI6 binary
-  → output.mobi
+  → azw3_writer       pack into AZW3 (joint MOBI6+KF8) binary   [default]
+  → mobi_writer       pack into MOBI6 binary                     [--format MOBI]
+  → output.azw3 / output.mobi
 ```
 
-Output is **MOBI6** (file version 6). Every Kindle since 2007 reads MOBI6.
+The default output is **AZW3** (joint MOBI6+KF8), which enables Panel View on supported Kindles. Pass `--format MOBI` to produce a plain MOBI6 file instead; every Kindle since 2007 reads both formats.
 
 ## Limitations
 
 - **Tested on Kindle Paperwhite 5.** Other devices should work but haven't been verified.
-- **No smart cropping.** KCC's page-number-aware cropping, FFT-based rainbow-artifact removal, and inter-panel gutter detection are not reimplemented. For clean digital manga (e.g. Fanatical bundles) this is fine; for low-quality scans you may want a different tool.
+- **No smart cropping.** The `--cropping` flag is accepted and the crop level is stored, but the cropping pass is not yet applied during image processing.
 - **DRM-protected EPUBs are rejected** — by design.
 - **Comic / manga focused.** Text-heavy EPUBs with reflowable content will be flattened to one image per page; that's not what you want.

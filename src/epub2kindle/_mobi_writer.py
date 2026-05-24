@@ -103,10 +103,15 @@ def _build_html(image_count: int) -> bytes:
     predates HTML5.
     """
     pages = [
-        f'<div style="page-break-after:always"><img recindex="{n:05d}"/></div>'
+        f'<div style="margin:0;padding:0;page-break-after:always"><img recindex="{n:05d}" style="display:block"/></div>'
         for n in range(1, image_count + 1)
     ]
-    html = '<html><head></head><body>' + ''.join(pages) + '</body></html>'
+    html = (
+        '<html><head>'
+        '<style type="text/css">body{margin:0;padding:0}img{display:block}</style>'
+        '</head>'
+        '<body style="margin:0;padding:0">' + ''.join(pages) + '</body></html>'
+    )
     return html.encode("utf-8")
 
 

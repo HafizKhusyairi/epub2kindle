@@ -13,10 +13,6 @@ _JPEG_QUALITY = 85
 _JPEG_QUALITY_HQ = 90
 
 
-def _natural_sort_key(p: Path) -> tuple:
-    return (len(p.stem), p.name)
-
-
 def _list_image_files(image_dir: Path) -> list[Path]:
     files = [p for p in image_dir.iterdir() if p.is_file()]
     files.sort(key=lambda p: p.name)
@@ -45,13 +41,16 @@ def _resize_for_device(
         return img
     iw, ih = img.size
 
+    # Choose resampling: LANCZOS for downscale (sharper), BICUBIC for upscale.
+    method = Image.Resampling.LANCZOS if (iw > tw or ih > th) else Image.Resampling.BICUBIC
+
     if stretch:
-        return ImageOps.fit(img, (tw, th), method=Image.Resampling.LANCZOS)
+        return ImageOps.fit(img, (tw, th), method=method)
 
     if not upscale and iw <= tw and ih <= th:
         return img
 
-    return ImageOps.contain(img, (tw, th), method=Image.Resampling.LANCZOS)
+    return ImageOps.contain(img, (tw, th), method=method)
 
 
 def _apply_gamma(img: Image.Image, gamma: float) -> Image.Image:
